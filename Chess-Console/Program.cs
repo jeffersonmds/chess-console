@@ -15,9 +15,18 @@ namespace Chess_Console
                 {
                     Console.Clear();
                     Screen.printBoard(match.tab);
+
                     Console.WriteLine();
                     Console.Write("Origem: ");
                     Position origin = Screen.readPosition().toPosition();
+
+                    bool[,] possiblePositions = match.tab.Piece(origin).availableMovements();
+
+
+                    Console.Clear();
+                    Screen.printBoard(match.tab, possiblePositions);
+
+                    Console.WriteLine();
                     Console.Write("Destino: ");
                     Position destination = Screen.readPosition().toPosition();
                     match.doMovement(origin, destination);
