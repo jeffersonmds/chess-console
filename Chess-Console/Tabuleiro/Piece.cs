@@ -20,6 +20,27 @@
             Movements++;
         }
 
+        public bool haveAvailableMovements()
+        {
+            bool[,] mat = availableMovements();
+            for (int i = 0; i < Tab.Rows; i++)
+            {
+                for (int j = 0; j < Tab.Columns; j++)
+                {
+                    if (mat[i, j])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool canMoveTo(Position pos)
+        {
+            return availableMovements()[pos.Row, pos.Column];
+        }
+
         public abstract bool[,] availableMovements();
     }
 }

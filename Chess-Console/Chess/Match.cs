@@ -6,8 +6,8 @@ namespace Chess
     class Match
     {
         public Board tab { get; private set; }
-        public int Turno { get; set; }
-        public Color CurrentPlayer { get; set; }
+        public int Turno { get; private set; }
+        public Color CurrentPlayer { get; private set; }
         public bool Finished { get; private set; }
 
         public Match()
@@ -25,6 +25,45 @@ namespace Chess
             p.increaseMovements();
             Piece captured = tab.removePiece(destination);
             tab.putPiece(p, destination);
+        }
+
+        public void doPlay(Position origin, Position destination)
+        {
+            doMovement(origin, destination);
+            Turno++;
+            changeCurrentPlayer();
+        }
+
+        public void validadeOriginPosition(Position pos)
+        {
+            if (tab.Piece(pos) == null)
+            {
+                throw new BoardException("Não existe peça na posição de origem escolhida!");
+            }
+            if (CurrentPlayer != tab.Piece(pos).Color)
+            {
+                throw new BoardException("A peça escolhida não é sua!");
+            }
+            if (!tab.Piece(pos).haveAvailableMovements())
+            {
+                throw new BoardException("Não há movimentos possíveis para a peça de origem escolhida!");
+            }
+        }
+
+        public void validadeDestinationPosition(Position origin, Position destination)
+        {
+            if (!tab.Piece(origin).canMoveTo(destination))
+            {
+                throw new BoardException("Posição de destino inválida!");
+            }
+        }
+
+        private void changeCurrentPlayer()
+        {
+            if (CurrentPlayer == Color.White)
+                CurrentPlayer = Color.Black;
+            else
+                CurrentPlayer = Color.White;
         }
 
         private void putAllPieces()
