@@ -35,6 +35,7 @@ namespace Chess_Console
                         match.ValidadeDestinationPosition(origin, destination);
 
                         match.DoPlay(origin, destination);
+
                     }
                     catch (BoardException e)
                     {

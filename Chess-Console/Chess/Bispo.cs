@@ -30,7 +30,7 @@ namespace Chess
                 mat[pos.Row, pos.Column] = true;
                 if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
                     break;
-                pos.defineValues(Position.Row - 1, Position.Column - 1);
+                pos.defineValues(pos.Row - 1, pos.Column - 1);
             }
 
             // ne
@@ -40,7 +40,7 @@ namespace Chess
                 mat[pos.Row, pos.Column] = true;
                 if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
                     break;
-                pos.defineValues(Position.Row - 1, Position.Column + 1);
+                pos.defineValues(pos.Row - 1, pos.Column + 1);
             }
 
             // se
@@ -50,7 +50,7 @@ namespace Chess
                 mat[pos.Row, pos.Column] = true;
                 if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
                     break;
-                pos.defineValues(Position.Row + 1, Position.Column + 1);
+                pos.defineValues(pos.Row + 1, pos.Column + 1);
             }
 
             // so
@@ -60,7 +60,7 @@ namespace Chess
                 mat[pos.Row, pos.Column] = true;
                 if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
                     break;
-                pos.defineValues(Position.Row + 1, Position.Column - 1);
+                pos.defineValues(pos.Row + 1, pos.Column - 1);
             }
             return mat;
         }

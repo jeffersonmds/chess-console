@@ -24,24 +24,14 @@ namespace Chess
             bool[,] mat = new bool[Tab.Rows, Tab.Columns];
             Position pos = new Position(0, 0);
 
-            // acima
-            pos.defineValues(Position.Row - 1, Position.Column);
+            // esquerda
+            pos.defineValues(Position.Row, Position.Column - 1);
             while (Tab.IsValidPosition(pos) && IsAvailabe(pos))
             {
                 mat[pos.Row, pos.Column] = true;
                 if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
                     break;
-                pos.Row = pos.Row - 1;
-            }
-
-            // abaixo
-            pos.defineValues(Position.Row + 1, Position.Column);
-            while (Tab.IsValidPosition(pos) && IsAvailabe(pos))
-            {
-                mat[pos.Row, pos.Column] = true;
-                if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
-                    break;
-                pos.Row = pos.Row + 1;
+                pos.defineValues(pos.Row, pos.Column - 1);
             }
 
             // direita
@@ -51,18 +41,28 @@ namespace Chess
                 mat[pos.Row, pos.Column] = true;
                 if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
                     break;
-                pos.Column = pos.Column + 1;
+                pos.defineValues(pos.Row, pos.Column + 1);
             }
 
-            // esquerda
-            pos.defineValues(Position.Row, Position.Column - 1);
+            // acima
+            pos.defineValues(Position.Row - 1, Position.Column);
             while (Tab.IsValidPosition(pos) && IsAvailabe(pos))
             {
                 mat[pos.Row, pos.Column] = true;
                 if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
                     break;
-                pos.Column = pos.Column - 1;
+                pos.defineValues(pos.Row - 1, pos.Column);
             }
+
+            // abaixo
+            pos.defineValues(Position.Row + 1, Position.Column);
+            while (Tab.IsValidPosition(pos) && IsAvailabe(pos))
+            {
+                mat[pos.Row, pos.Column] = true;
+                if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
+                    break;
+                pos.defineValues(pos.Row + 1, pos.Column);
+            }      
 
             // no
             pos.defineValues(Position.Row - 1, Position.Column - 1);
@@ -71,7 +71,7 @@ namespace Chess
                 mat[pos.Row, pos.Column] = true;
                 if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
                     break;
-                pos.defineValues(Position.Row - 1, Position.Column - 1);
+                pos.defineValues(pos.Row - 1, pos.Column - 1);
             }
 
             // ne
@@ -81,7 +81,7 @@ namespace Chess
                 mat[pos.Row, pos.Column] = true;
                 if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
                     break;
-                pos.defineValues(Position.Row - 1, Position.Column + 1);
+                pos.defineValues(pos.Row - 1, pos.Column + 1);
             }
 
             // se
@@ -91,7 +91,7 @@ namespace Chess
                 mat[pos.Row, pos.Column] = true;
                 if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
                     break;
-                pos.defineValues(Position.Row + 1, Position.Column + 1);
+                pos.defineValues(pos.Row + 1, pos.Column + 1);
             }
 
             // so
@@ -101,7 +101,7 @@ namespace Chess
                 mat[pos.Row, pos.Column] = true;
                 if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
                     break;
-                pos.defineValues(Position.Row + 1, Position.Column - 1);
+                pos.defineValues(pos.Row + 1, pos.Column - 1);
             }
 
             return mat;

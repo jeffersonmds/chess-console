@@ -35,6 +35,27 @@ namespace Chess
             {
                 CapturedPieces.Add(captured);
             }
+
+            // #jogadaespecial roque pequeno
+            if (p is Rei && destination.Column == origin.Column + 2)
+            {
+                Position originT = new Position(origin.Row, origin.Column + 3);
+                Position destinationT = new Position(origin.Row, origin.Column + 1);
+                Piece T = Tab.RemovePiece(originT);
+                T.IncreaseMovements();
+                Tab.PutPiece(T, destinationT);
+            }
+
+            // #jogadaespecial roque grande
+            if (p is Rei && destination.Column == origin.Column - 2)
+            {
+                Position originT = new Position(origin.Row, origin.Column - 4);
+                Position destinationT = new Position(origin.Row, origin.Column - 1);
+                Piece T = Tab.RemovePiece(originT);
+                T.IncreaseMovements();
+                Tab.PutPiece(T, destinationT);
+            }
+
             return captured;
         }
 
@@ -48,12 +69,31 @@ namespace Chess
                 CapturedPieces.Remove(captured);
             }
             Tab.PutPiece(p, origin);
+
+            // #jogadaespecial roque pequeno
+            if (p is Rei && destination.Column == origin.Column + 2)
+            {
+                Position originT = new Position(origin.Row, origin.Column + 3);
+                Position destinationT = new Position(origin.Row, origin.Column + 1);
+                Piece T = Tab.RemovePiece(destinationT);
+                T.DecreaseMovements();
+                Tab.PutPiece(T, originT);
+            }
+
+            // #jogadaespecial roque grande
+            if (p is Rei && destination.Column == origin.Column - 2)
+            {
+                Position originT = new Position(origin.Row, origin.Column - 4);
+                Position destinationT = new Position(origin.Row, origin.Column - 1);
+                Piece T = Tab.RemovePiece(destinationT);
+                T.DecreaseMovements();
+                Tab.PutPiece(T, originT);
+            }
         }
 
         public void DoPlay(Position origin, Position destination)
         {
             Piece capturada = DoMovement(origin, destination);
-
             if (IsCheck(CurrentPlayer))
             {
                 UndoMovement(origin, destination, capturada);
@@ -64,7 +104,6 @@ namespace Chess
                 Check = true;
             else
                 Check = false;
-
             if (CheckmateTest(Adversary(CurrentPlayer)))
                 Finished = true;
             else
@@ -208,7 +247,7 @@ namespace Chess
             PutNewPiece('b', 1, new Cavalo(Color.White, Tab));
             PutNewPiece('c', 1, new Bispo(Color.White, Tab));
             PutNewPiece('d', 1, new Dama(Color.White, Tab));
-            PutNewPiece('e', 1, new Rei(Color.White, Tab));
+            PutNewPiece('e', 1, new Rei(Color.White, Tab, this));
             PutNewPiece('f', 1, new Bispo(Color.White, Tab));
             PutNewPiece('g', 1, new Cavalo(Color.White, Tab));
             PutNewPiece('h', 1, new Torre(Color.White, Tab));
@@ -225,7 +264,7 @@ namespace Chess
             PutNewPiece('b', 8, new Cavalo(Color.Black, Tab));
             PutNewPiece('c', 8, new Bispo(Color.Black, Tab));
             PutNewPiece('d', 8, new Dama(Color.Black, Tab));
-            PutNewPiece('e', 8, new Rei(Color.Black, Tab));
+            PutNewPiece('e', 8, new Rei(Color.Black, Tab, this));
             PutNewPiece('f', 8, new Bispo(Color.Black, Tab));
             PutNewPiece('g', 8, new Cavalo(Color.Black, Tab));
             PutNewPiece('h', 8, new Torre(Color.Black, Tab));

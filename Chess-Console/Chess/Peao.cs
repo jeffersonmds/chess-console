@@ -36,7 +36,8 @@ namespace Chess
                     mat[pos.Row, pos.Column] = true;
 
                 pos.defineValues(Position.Row - 2, Position.Column);
-                if (Tab.IsValidPosition(pos) && Free(pos) && Movements == 0)
+                Position p2 = new Position(Position.Row - 1, Position.Column);
+                if (Tab.IsValidPosition(p2) && Free(p2) && Tab.IsValidPosition(pos) && Free(pos) && Movements == 0)
                     mat[pos.Row, pos.Column] = true;
 
                 pos.defineValues(Position.Row - 1, Position.Column - 1);
@@ -54,7 +55,8 @@ namespace Chess
                     mat[pos.Row, pos.Column] = true;
 
                 pos.defineValues(Position.Row + 2, Position.Column);
-                if (Tab.IsValidPosition(pos) && Free(pos) && Movements == 0)
+                Position p2 = new Position(Position.Row + 1, Position.Column);
+                if (Tab.IsValidPosition(p2) && Free(p2) && Tab.IsValidPosition(pos) && Free(pos) && Movements == 0)
                     mat[pos.Row, pos.Column] = true;
 
                 pos.defineValues(Position.Row + 1, Position.Column - 1);
@@ -65,7 +67,6 @@ namespace Chess
                 if (Tab.IsValidPosition(pos) && HaveEnemy(pos))
                     mat[pos.Row, pos.Column] = true;
             }
-
 
             return mat;
         }
