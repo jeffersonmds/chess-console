@@ -25,7 +25,7 @@ namespace Chess
 
             // acima
             pos.defineValues(Position.Row - 1, Position.Column);
-            while(Tab.isValidPosition(pos) && isAvailabe(pos))
+            while(Tab.IsValidPosition(pos) && isAvailabe(pos))
             {
                 mat[pos.Row, pos.Column] = true;
                 if(Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)           
@@ -35,7 +35,7 @@ namespace Chess
 
             // abaixo
             pos.defineValues(Position.Row + 1, Position.Column);
-            while (Tab.isValidPosition(pos) && isAvailabe(pos))
+            while (Tab.IsValidPosition(pos) && isAvailabe(pos))
             {
                 mat[pos.Row, pos.Column] = true;
                 if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
@@ -45,7 +45,7 @@ namespace Chess
 
             // direita
             pos.defineValues(Position.Row, Position.Column + 1);
-            while (Tab.isValidPosition(pos) && isAvailabe(pos))
+            while (Tab.IsValidPosition(pos) && isAvailabe(pos))
             {
                 mat[pos.Row, pos.Column] = true;
                 if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)
@@ -55,7 +55,7 @@ namespace Chess
 
             // esquerda
             pos.defineValues(Position.Row, Position.Column - 1);
-            while (Tab.isValidPosition(pos) && isAvailabe(pos))
+            while (Tab.IsValidPosition(pos) && isAvailabe(pos))
             {
                 mat[pos.Row, pos.Column] = true;
                 if (Tab.Piece(pos) != null && Tab.Piece(pos).Color != Color)

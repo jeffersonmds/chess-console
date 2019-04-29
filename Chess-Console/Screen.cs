@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Tabuleiro;
 using Chess;
 
@@ -6,21 +7,54 @@ namespace Chess_Console
 {
     class Screen
     {
-        public static void printBoard(Board tab)
+        public static void PrintMatch(Match match)
+        {
+            PrintBoard(match.Tab);
+            Console.WriteLine();
+            PrintCapturedPieces(match);
+            Console.WriteLine("\nTurno: " + match.Turno);
+            Console.WriteLine("Aguardando jogada: " + match.CurrentPlayer);
+
+        }
+
+        public static void PrintCapturedPieces(Match match)
+        {
+            Console.WriteLine("Peças capturadas:");
+            Console.Write("Brancas: ");
+            PrintSet(match.CapturedPiecesList(Color.White));
+            Console.Write("\nPretas: ");
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            PrintSet(match.CapturedPiecesList(Color.Black));
+            Console.ForegroundColor = aux;
+            Console.WriteLine();
+        }
+
+        public static void PrintSet(HashSet<Piece> set)
+        {
+            Console.Write("[ ");
+            foreach(Piece x in set)
+            {
+                Console.Write(x + " ");
+            }
+            Console.Write("]");
+        }
+
+        public static void PrintBoard(Board tab)
         {
             for(int i = 0; i < tab.Rows; i++)
             {
                 Console.Write(8 - i + " ");
                 for (int j = 0; j < tab.Columns; j++)
                 {
-                    printPiece(tab.Piece(i, j));
+                    PrintPiece(tab.Piece(i, j));
                 }
                 Console.WriteLine();
             }
             Console.WriteLine("  a b c d e f g h");
         }
 
-        public static void printBoard(Board tab, bool[,] possiblePositions)
+        public static void PrintBoard(Board tab, bool[,] possiblePositions)
         {
             ConsoleColor defaultBackground = Console.BackgroundColor;
             ConsoleColor changedBackground = ConsoleColor.DarkGray;
@@ -33,7 +67,7 @@ namespace Chess_Console
                         Console.BackgroundColor = changedBackground;
                     else
                         Console.BackgroundColor = defaultBackground;
-                    printPiece(tab.Piece(i, j));
+                    PrintPiece(tab.Piece(i, j));
                     Console.BackgroundColor = defaultBackground;
                 }
                 Console.WriteLine();
@@ -42,7 +76,7 @@ namespace Chess_Console
             Console.BackgroundColor = defaultBackground;
         }
 
-        public static ChessPosition readPosition()
+        public static ChessPosition ReadPosition()
         {
             string s = Console.ReadLine();
             char column = s[0];
@@ -50,7 +84,7 @@ namespace Chess_Console
             return new ChessPosition(column, row);
         }
 
-        public static void printPiece(Piece piece)
+        public static void PrintPiece(Piece piece)
         {
             if (piece == null)
             {

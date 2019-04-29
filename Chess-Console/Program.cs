@@ -16,28 +16,25 @@ namespace Chess_Console
                     try
                     {
                         Console.Clear();
-                        Screen.printBoard(match.tab);
-                        Console.WriteLine("\nTurno: " + match.Turno);
-                        Console.WriteLine("Aguardando jogada: " + match.CurrentPlayer);
-
+                        Screen.PrintMatch(match);
 
                         Console.WriteLine();
                         Console.Write("Origem: ");
-                        Position origin = Screen.readPosition().toPosition();
-                        match.validadeOriginPosition(origin);
+                        Position origin = Screen.ReadPosition().toPosition();
+                        match.ValidadeOriginPosition(origin);
 
-                        bool[,] possiblePositions = match.tab.Piece(origin).availableMovements();
+                        bool[,] possiblePositions = match.Tab.Piece(origin).availableMovements();
 
 
                         Console.Clear();
-                        Screen.printBoard(match.tab, possiblePositions);
+                        Screen.PrintBoard(match.Tab, possiblePositions);
 
                         Console.WriteLine();
                         Console.Write("Destino: ");
-                        Position destination = Screen.readPosition().toPosition();
-                        match.validadeDestinationPosition(origin, destination);
+                        Position destination = Screen.ReadPosition().toPosition();
+                        match.ValidadeDestinationPosition(origin, destination);
 
-                        match.doPlay(origin, destination);
+                        match.DoPlay(origin, destination);
                     }
                     catch (BoardException e)
                     {
@@ -46,7 +43,7 @@ namespace Chess_Console
                     }
                 }
 
-                Screen.printBoard(match.tab);
+                Screen.PrintBoard(match.Tab);
             }
             catch(BoardException e)
             {

@@ -23,15 +23,15 @@
             return Pieces[pos.Row, pos.Column];
         }
 
-        public bool pieceExists(Position pos)
+        public bool PieceExists(Position pos)
         {
-            validatePosition(pos);
+            ValidatePosition(pos);
             return Piece(pos) != null;
         }
 
-        public void putPiece(Piece p, Position pos)
+        public void PutPiece(Piece p, Position pos)
         {
-            if (pieceExists(pos))
+            if (PieceExists(pos))
             {
                 throw new BoardException("Já existe peça nessa posição");
             }
@@ -39,7 +39,7 @@
             p.Position = pos;
         }
 
-        public Piece removePiece(Position pos)
+        public Piece RemovePiece(Position pos)
         {
             if(Piece(pos) == null)
             {
@@ -51,16 +51,16 @@
             return aux;
         }
 
-        public bool isValidPosition(Position pos)
+        public bool IsValidPosition(Position pos)
         {
             if (pos.Row < 0 || pos.Row >= Rows || pos.Column < 0 || pos.Column >= Columns)
                 return false;
             return true;
         }
 
-        public void validatePosition(Position pos)
+        public void ValidatePosition(Position pos)
         {
-            if (!isValidPosition(pos))
+            if (!IsValidPosition(pos))
             {
                 throw new BoardException("Posição inválida");
             }

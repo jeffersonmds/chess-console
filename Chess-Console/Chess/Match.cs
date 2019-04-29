@@ -1,64 +1,72 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Tabuleiro;
 
 namespace Chess
 {
     class Match
     {
-        public Board tab { get; private set; }
+        public Board Tab { get; private set; }
         public int Turno { get; private set; }
         public Color CurrentPlayer { get; private set; }
         public bool Finished { get; private set; }
+        private HashSet<Piece> Pieces { get; set; }
+        private HashSet<Piece> CapturedPieces { get; set; }
 
         public Match()
         {
-            tab = new Board(8, 8);
+            Tab = new Board(8, 8);
             Turno = 1;
             CurrentPlayer = Color.White;
             Finished = false;
-            putAllPieces();
+            Pieces = new HashSet<Piece>();
+            CapturedPieces = new HashSet<Piece>();
+            PutAllPieces();
         }
 
-        public void doMovement(Position origin, Position destination)
+        public void DoMovement(Position origin, Position destination)
         {
-            Piece p = tab.removePiece(origin);
+            Piece p = Tab.RemovePiece(origin);
             p.increaseMovements();
-            Piece captured = tab.removePiece(destination);
-            tab.putPiece(p, destination);
+            Piece captured = Tab.RemovePiece(destination);
+            Tab.PutPiece(p, destination);
+            if (captured != null)
+            {
+                CapturedPieces.Add(captured);
+            }
         }
 
-        public void doPlay(Position origin, Position destination)
+        public void DoPlay(Position origin, Position destination)
         {
-            doMovement(origin, destination);
+            DoMovement(origin, destination);
             Turno++;
-            changeCurrentPlayer();
+            ChangeCurrentPlayer();
         }
 
-        public void validadeOriginPosition(Position pos)
+        public void ValidadeOriginPosition(Position pos)
         {
-            if (tab.Piece(pos) == null)
+            if (Tab.Piece(pos) == null)
             {
                 throw new BoardException("Não existe peça na posição de origem escolhida!");
             }
-            if (CurrentPlayer != tab.Piece(pos).Color)
+            if (CurrentPlayer != Tab.Piece(pos).Color)
             {
                 throw new BoardException("A peça escolhida não é sua!");
             }
-            if (!tab.Piece(pos).haveAvailableMovements())
+            if (!Tab.Piece(pos).haveAvailableMovements())
             {
                 throw new BoardException("Não há movimentos possíveis para a peça de origem escolhida!");
             }
         }
 
-        public void validadeDestinationPosition(Position origin, Position destination)
+        public void ValidadeDestinationPosition(Position origin, Position destination)
         {
-            if (!tab.Piece(origin).canMoveTo(destination))
+            if (!Tab.Piece(origin).canMoveTo(destination))
             {
                 throw new BoardException("Posição de destino inválida!");
             }
         }
 
-        private void changeCurrentPlayer()
+        private void ChangeCurrentPlayer()
         {
             if (CurrentPlayer == Color.White)
                 CurrentPlayer = Color.Black;
@@ -66,22 +74,54 @@ namespace Chess
                 CurrentPlayer = Color.White;
         }
 
-        private void putAllPieces()
+        public HashSet<Piece> CapturedPiecesList(Color color)
         {
-            tab.putPiece(new Torre(Color.White, tab), new ChessPosition('c', 1).toPosition());
-            tab.putPiece(new Torre(Color.White, tab), new ChessPosition('c', 2).toPosition());
-            tab.putPiece(new Torre(Color.White, tab), new ChessPosition('d', 2).toPosition());
-            tab.putPiece(new Torre(Color.White, tab), new ChessPosition('e', 2).toPosition());
-            tab.putPiece(new Torre(Color.White, tab), new ChessPosition('e', 1).toPosition());
-            tab.putPiece(new Rei(Color.White, tab), new ChessPosition('d', 1).toPosition());
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach (Piece x in CapturedPieces)
+            {
+                if (x.Color == color)
+                {
+                    aux.Add(x);
+                }
+            }
+            return aux;
+        }
 
-            tab.putPiece(new Torre(Color.Black, tab), new ChessPosition('c', 7).toPosition());
-            tab.putPiece(new Torre(Color.Black, tab), new ChessPosition('c', 8).toPosition());
-            tab.putPiece(new Torre(Color.Black, tab), new ChessPosition('d', 7).toPosition());
-            tab.putPiece(new Torre(Color.Black, tab), new ChessPosition('e', 7).toPosition());
-            tab.putPiece(new Torre(Color.Black, tab), new ChessPosition('e', 8).toPosition());
-            tab.putPiece(new Rei(Color.Black, tab), new ChessPosition('d', 8).toPosition());
+        public HashSet<Piece> PiecesInGame(Color color)
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach (Piece x in Pieces)
+            {
+                if (x.Color == color)
+                {
+                    aux.Add(x);
+                }
+            }
+            aux.ExceptWith(CapturedPiecesList(color));
+            return aux;
+        }
 
+        public void PutNewPiece(char column, int row, Piece piece)
+        {
+            Tab.PutPiece(piece, new ChessPosition(column, row).toPosition());
+            Pieces.Add(piece);
+        }
+
+        private void PutAllPieces()
+        {
+            PutNewPiece('c', 1, new Torre(Color.White, Tab));
+            PutNewPiece('c', 2, new Torre(Color.White, Tab));
+            PutNewPiece('d', 2, new Torre(Color.White, Tab));
+            PutNewPiece('e', 2, new Torre(Color.White, Tab));
+            PutNewPiece('e', 1, new Torre(Color.White, Tab));
+            PutNewPiece('d', 1, new Rei(Color.White, Tab));
+
+            PutNewPiece('c', 7, new Torre(Color.Black, Tab));
+            PutNewPiece('c', 8, new Torre(Color.Black, Tab));
+            PutNewPiece('d', 7, new Torre(Color.Black, Tab));
+            PutNewPiece('e', 7, new Torre(Color.Black, Tab));
+            PutNewPiece('e', 8, new Torre(Color.Black, Tab));
+            PutNewPiece('d', 8, new Rei(Color.Black, Tab));
         }
     }
 }
