@@ -12,6 +12,7 @@ namespace Chess
         private HashSet<Piece> Pieces { get; set; }
         private HashSet<Piece> CapturedPieces { get; set; }
         public bool Check { get; private set; }
+        public Piece VulnerableEnPassant { get; private set; }
 
         public Match()
         {
@@ -20,6 +21,7 @@ namespace Chess
             CurrentPlayer = Color.White;
             Finished = false;
             Check = false;
+            VulnerableEnPassant = null;
             Pieces = new HashSet<Piece>();
             CapturedPieces = new HashSet<Piece>();
             PutAllPieces();
@@ -56,6 +58,21 @@ namespace Chess
                 Tab.PutPiece(T, destinationT);
             }
 
+            // #jogadaespecial en passant
+            if (p is Peao)
+            {
+                if (origin.Column != destination.Column && captured == null)
+                {
+                    Position posP;
+                    if (p.Color == Color.White)
+                        posP = new Position(destination.Row + 1, destination.Column);                    
+                    else
+                        posP = new Position(destination.Row - 1, destination.Column);
+                    captured = Tab.RemovePiece(posP);
+                    CapturedPieces.Add(captured);
+                }
+            }
+
             return captured;
         }
 
@@ -89,6 +106,22 @@ namespace Chess
                 T.DecreaseMovements();
                 Tab.PutPiece(T, originT);
             }
+
+            // #jogadaespecial en passant
+            if (p is Peao)
+            {
+                if (origin.Column != destination.Column && captured == null)
+                {
+                    Piece peao = Tab.RemovePiece(destination);
+                    Position posP;
+                    if (p.Color == Color.White)
+                        posP = new Position(3, destination.Column);
+                    else
+                        posP = new Position(4, destination.Column);
+                    Tab.PutPiece(peao, posP);
+                }
+            }
+
         }
 
         public void DoPlay(Position origin, Position destination)
@@ -111,6 +144,13 @@ namespace Chess
                 Turno++;
                 ChangeCurrentPlayer();
             }
+
+            Piece p = Tab.Piece(destination);
+            // #jogadaespecial en passant
+            if (p is Peao && (destination.Row == origin.Row - 2 || destination.Row == origin.Row + 2))
+                VulnerableEnPassant = p;
+            else
+                VulnerableEnPassant = null;
         }
 
         public void ValidadeOriginPosition(Position pos)
@@ -251,14 +291,14 @@ namespace Chess
             PutNewPiece('f', 1, new Bispo(Color.White, Tab));
             PutNewPiece('g', 1, new Cavalo(Color.White, Tab));
             PutNewPiece('h', 1, new Torre(Color.White, Tab));
-            PutNewPiece('a', 2, new Peao(Color.White, Tab));
-            PutNewPiece('b', 2, new Peao(Color.White, Tab));
-            PutNewPiece('c', 2, new Peao(Color.White, Tab));
-            PutNewPiece('d', 2, new Peao(Color.White, Tab));
-            PutNewPiece('e', 2, new Peao(Color.White, Tab));
-            PutNewPiece('f', 2, new Peao(Color.White, Tab));
-            PutNewPiece('g', 2, new Peao(Color.White, Tab));
-            PutNewPiece('h', 2, new Peao(Color.White, Tab));
+            PutNewPiece('a', 2, new Peao(Color.White, Tab, this));
+            PutNewPiece('b', 2, new Peao(Color.White, Tab, this));
+            PutNewPiece('c', 2, new Peao(Color.White, Tab, this));
+            PutNewPiece('d', 2, new Peao(Color.White, Tab, this));
+            PutNewPiece('e', 2, new Peao(Color.White, Tab, this));
+            PutNewPiece('f', 2, new Peao(Color.White, Tab, this));
+            PutNewPiece('g', 2, new Peao(Color.White, Tab, this));
+            PutNewPiece('h', 2, new Peao(Color.White, Tab, this));
 
             PutNewPiece('a', 8, new Torre(Color.Black, Tab));
             PutNewPiece('b', 8, new Cavalo(Color.Black, Tab));
@@ -268,14 +308,14 @@ namespace Chess
             PutNewPiece('f', 8, new Bispo(Color.Black, Tab));
             PutNewPiece('g', 8, new Cavalo(Color.Black, Tab));
             PutNewPiece('h', 8, new Torre(Color.Black, Tab));
-            PutNewPiece('a', 7, new Peao(Color.Black, Tab));
-            PutNewPiece('b', 7, new Peao(Color.Black, Tab));
-            PutNewPiece('c', 7, new Peao(Color.Black, Tab));
-            PutNewPiece('d', 7, new Peao(Color.Black, Tab));
-            PutNewPiece('e', 7, new Peao(Color.Black, Tab));
-            PutNewPiece('f', 7, new Peao(Color.Black, Tab));
-            PutNewPiece('g', 7, new Peao(Color.Black, Tab));
-            PutNewPiece('h', 7, new Peao(Color.Black, Tab));
+            PutNewPiece('a', 7, new Peao(Color.Black, Tab, this));
+            PutNewPiece('b', 7, new Peao(Color.Black, Tab, this));
+            PutNewPiece('c', 7, new Peao(Color.Black, Tab, this));
+            PutNewPiece('d', 7, new Peao(Color.Black, Tab, this));
+            PutNewPiece('e', 7, new Peao(Color.Black, Tab, this));
+            PutNewPiece('f', 7, new Peao(Color.Black, Tab, this));
+            PutNewPiece('g', 7, new Peao(Color.Black, Tab, this));
+            PutNewPiece('h', 7, new Peao(Color.Black, Tab, this));
         }
     }
 }

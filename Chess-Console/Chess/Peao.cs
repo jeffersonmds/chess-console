@@ -4,8 +4,11 @@ namespace Chess
 {
     class Peao : Piece
     {
-        public Peao(Color color, Board tab) : base(color, tab)
+        private Match match;
+
+        public Peao(Color color, Board tab, Match match) : base(color, tab)
         {
+            this.match = match;
         }
 
         public override string ToString()
@@ -47,6 +50,22 @@ namespace Chess
                 pos.defineValues(Position.Row - 1, Position.Column + 1);
                 if (Tab.IsValidPosition(pos) && HaveEnemy(pos))
                     mat[pos.Row, pos.Column] = true;
+
+                // #jogadaespecial en passant
+                if (Position.Row == 3)
+                {
+                    Position esquerda = new Position(Position.Row, Position.Column - 1);
+                    if (Tab.IsValidPosition(esquerda) && HaveEnemy(esquerda) && Tab.Piece(esquerda) == match.VulnerableEnPassant)
+                    {
+                        mat[esquerda.Row - 1, esquerda.Column] = true;
+                    }
+                    Position direita = new Position(Position.Row, Position.Column + 1);
+                    if (Tab.IsValidPosition(direita) && HaveEnemy(direita) && Tab.Piece(direita) == match.VulnerableEnPassant)
+                    {
+                        mat[direita.Row - 1, direita.Column] = true;
+                    }
+                }
+                    
             }
             else
             {
@@ -66,6 +85,21 @@ namespace Chess
                 pos.defineValues(Position.Row + 1, Position.Column + 1);
                 if (Tab.IsValidPosition(pos) && HaveEnemy(pos))
                     mat[pos.Row, pos.Column] = true;
+
+                // #jogadaespecial en passant
+                if (Position.Row == 4)
+                {
+                    Position esquerda = new Position(Position.Row, Position.Column - 1);
+                    if (Tab.IsValidPosition(esquerda) && HaveEnemy(esquerda) && Tab.Piece(esquerda) == match.VulnerableEnPassant)
+                    {
+                        mat[esquerda.Row + 1, esquerda.Column] = true;
+                    }
+                    Position direita = new Position(Position.Row, Position.Column + 1);
+                    if (Tab.IsValidPosition(direita) && HaveEnemy(direita) && Tab.Piece(direita) == match.VulnerableEnPassant)
+                    {
+                        mat[direita.Row + 1, direita.Column] = true;
+                    }
+                }
             }
 
             return mat;
