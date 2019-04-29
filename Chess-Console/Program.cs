@@ -7,6 +7,7 @@ namespace Chess_Console
     {
         static void Main(string[] args)
         {
+            Board tab;
             Position P; 
         }
     }
