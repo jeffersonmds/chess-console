@@ -131,8 +131,24 @@ namespace Chess
             {
                 UndoMovement(origin, destination, capturada);
                 throw new BoardException("Você não pode se colocar em xeque");
-
             }
+
+            Piece p = Tab.Piece(destination);
+
+            // #jogadaespecial promocao
+            if (p is Peao)
+            {
+                if ((p.Color == Color.White && destination.Row == 0) || (p.Color == Color.Black && destination.Row == 7))
+                {
+                    p = Tab.RemovePiece(destination);
+                    Pieces.Remove(p);
+                    Piece dama = new Dama(p.Color, Tab);
+                    Tab.PutPiece(dama, destination);
+                    Pieces.Add(dama);
+                }
+            }
+
+
             if (IsCheck(Adversary(CurrentPlayer)))
                 Check = true;
             else
@@ -145,7 +161,6 @@ namespace Chess
                 ChangeCurrentPlayer();
             }
 
-            Piece p = Tab.Piece(destination);
             // #jogadaespecial en passant
             if (p is Peao && (destination.Row == origin.Row - 2 || destination.Row == origin.Row + 2))
                 VulnerableEnPassant = p;
