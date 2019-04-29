@@ -7,7 +7,9 @@ namespace Chess_Console
     {
         static void Main(string[] args)
         {
-            Board tab;
+            Board tab = new Board(8,8);
+
+            Screen.printBoard(tab);
             Position P; 
         }
     }
