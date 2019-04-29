@@ -11,6 +11,7 @@ namespace Chess
         public bool Finished { get; private set; }
         private HashSet<Piece> Pieces { get; set; }
         private HashSet<Piece> CapturedPieces { get; set; }
+        public bool Checkmate { get; private set; }
 
         public Match()
         {
@@ -18,26 +19,52 @@ namespace Chess
             Turno = 1;
             CurrentPlayer = Color.White;
             Finished = false;
+            Checkmate = false;
             Pieces = new HashSet<Piece>();
             CapturedPieces = new HashSet<Piece>();
             PutAllPieces();
         }
 
-        public void DoMovement(Position origin, Position destination)
+        public Piece DoMovement(Position origin, Position destination)
         {
             Piece p = Tab.RemovePiece(origin);
-            p.increaseMovements();
+            p.IncreaseMovements();
             Piece captured = Tab.RemovePiece(destination);
             Tab.PutPiece(p, destination);
             if (captured != null)
             {
                 CapturedPieces.Add(captured);
             }
+            return captured;
+        }
+
+        public void UndoMovement(Position origin, Position destination, Piece captured)
+        {
+            Piece p = Tab.RemovePiece(destination);
+            p.DecreaseMovements();
+            if (captured != null)
+            {
+                Tab.PutPiece(captured, destination);
+                CapturedPieces.Remove(captured);
+            }
+            Tab.PutPiece(p, origin);
         }
 
         public void DoPlay(Position origin, Position destination)
         {
-            DoMovement(origin, destination);
+            Piece capturada = DoMovement(origin, destination);
+
+            if (IsCheckmate(CurrentPlayer))
+            {
+                UndoMovement(origin, destination, capturada);
+                throw new BoardException("Você não pode se colocar em xeque");
+
+            }
+            if (IsCheckmate(Adversary(CurrentPlayer)))
+                Checkmate = true;
+            else
+                Checkmate = false;
+
             Turno++;
             ChangeCurrentPlayer();
         }
@@ -52,7 +79,7 @@ namespace Chess
             {
                 throw new BoardException("A peça escolhida não é sua!");
             }
-            if (!Tab.Piece(pos).haveAvailableMovements())
+            if (!Tab.Piece(pos).HaveAvailableMovements())
             {
                 throw new BoardException("Não há movimentos possíveis para a peça de origem escolhida!");
             }
@@ -60,7 +87,7 @@ namespace Chess
 
         public void ValidadeDestinationPosition(Position origin, Position destination)
         {
-            if (!Tab.Piece(origin).canMoveTo(destination))
+            if (!Tab.Piece(origin).CanMoveTo(destination))
             {
                 throw new BoardException("Posição de destino inválida!");
             }
@@ -99,6 +126,42 @@ namespace Chess
             }
             aux.ExceptWith(CapturedPiecesList(color));
             return aux;
+        }
+
+        private Color Adversary(Color color)
+        {
+            if (color == Color.White)
+                return Color.Black;
+            else
+                return Color.White;
+        }
+
+        private Piece King (Color color)
+        {
+            foreach(Piece x in PiecesInGame(color))
+            {
+                if (x is Rei)
+                {
+                    return x;
+                }
+            }
+            return null;
+        }
+
+        public bool IsCheckmate(Color color)
+        {
+            Piece R = King(color);
+            if (R == null)
+            {
+                throw new BoardException("Não tem rei da cor " + color + " no tabuleiro");
+            }
+            foreach(Piece x in PiecesInGame(Adversary(color)))
+            {
+                bool[,] mat = x.AvailableMovements();
+                if (mat[R.Position.Row, R.Position.Column])
+                    return true;
+            }
+            return false;
         }
 
         public void PutNewPiece(char column, int row, Piece piece)

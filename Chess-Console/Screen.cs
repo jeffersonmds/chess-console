@@ -14,7 +14,10 @@ namespace Chess_Console
             PrintCapturedPieces(match);
             Console.WriteLine("\nTurno: " + match.Turno);
             Console.WriteLine("Aguardando jogada: " + match.CurrentPlayer);
-
+            if (match.Checkmate)
+            {
+                Console.WriteLine("XEQUE");
+            }
         }
 
         public static void PrintCapturedPieces(Match match)

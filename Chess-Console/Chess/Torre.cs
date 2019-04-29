@@ -18,7 +18,7 @@ namespace Chess
             return p == null || p.Color != Color;
         }
 
-        public override bool[,] availableMovements()
+        public override bool[,] AvailableMovements()
         {
             bool[,] mat = new bool[Tab.Rows, Tab.Columns];
             Position pos = new Position(0, 0);

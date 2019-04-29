@@ -15,14 +15,19 @@
             this.Movements = 0;
         }
 
-        public void increaseMovements()
+        public void IncreaseMovements()
         {
             Movements++;
         }
 
-        public bool haveAvailableMovements()
+        public void DecreaseMovements()
         {
-            bool[,] mat = availableMovements();
+            Movements--;
+        }
+
+        public bool HaveAvailableMovements()
+        {
+            bool[,] mat = AvailableMovements();
             for (int i = 0; i < Tab.Rows; i++)
             {
                 for (int j = 0; j < Tab.Columns; j++)
@@ -36,11 +41,11 @@
             return false;
         }
 
-        public bool canMoveTo(Position pos)
+        public bool CanMoveTo(Position pos)
         {
-            return availableMovements()[pos.Row, pos.Column];
+            return AvailableMovements()[pos.Row, pos.Column];
         }
 
-        public abstract bool[,] availableMovements();
+        public abstract bool[,] AvailableMovements();
     }
 }
