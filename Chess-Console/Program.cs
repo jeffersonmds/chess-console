@@ -15,6 +15,8 @@ namespace Chess_Console
                 tab.putPiece(new Torre(Color.Black, tab), new Position(1, 3));
                 tab.putPiece(new Rei(Color.Black, tab), new Position(2, 4));
 
+                tab.putPiece(new Rei(Color.White, tab), new Position(3, 5));
+
                 Screen.printBoard(tab);
             }
             catch(BoardException e)

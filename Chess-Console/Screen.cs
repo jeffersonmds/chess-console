@@ -9,6 +9,7 @@ namespace Chess_Console
         {
             for(int i = 0; i < tab.Rows; i++)
             {
+                Console.Write(8 - i + " ");
                 for (int j = 0; j < tab.Columns; j++)
                 {
                     if (tab.Piece(i, j) == null)
@@ -17,10 +18,27 @@ namespace Chess_Console
                     }
                     else
                     {
-                        Console.Write(tab.Piece(i, j) + " ");
+                        printPiece(tab.Piece(i, j));
+                        Console.Write(" ");
                     }
                 }
                 Console.WriteLine();
+            }
+            Console.WriteLine("  a b c d e f g h");
+        }
+
+        public static void printPiece(Piece piece)
+        {
+            if (piece.Color == Color.White)
+            {
+                Console.Write(piece);
+            }
+            else
+            {
+                ConsoleColor aux = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(piece);
+                Console.ForegroundColor = aux;
             }
         }
     }
