@@ -11,7 +11,7 @@ namespace Chess
         public bool Finished { get; private set; }
         private HashSet<Piece> Pieces { get; set; }
         private HashSet<Piece> CapturedPieces { get; set; }
-        public bool Checkmate { get; private set; }
+        public bool Check { get; private set; }
 
         public Match()
         {
@@ -19,7 +19,7 @@ namespace Chess
             Turno = 1;
             CurrentPlayer = Color.White;
             Finished = false;
-            Checkmate = false;
+            Check = false;
             Pieces = new HashSet<Piece>();
             CapturedPieces = new HashSet<Piece>();
             PutAllPieces();
@@ -54,19 +54,24 @@ namespace Chess
         {
             Piece capturada = DoMovement(origin, destination);
 
-            if (IsCheckmate(CurrentPlayer))
+            if (IsCheck(CurrentPlayer))
             {
                 UndoMovement(origin, destination, capturada);
                 throw new BoardException("Você não pode se colocar em xeque");
 
             }
-            if (IsCheckmate(Adversary(CurrentPlayer)))
-                Checkmate = true;
+            if (IsCheck(Adversary(CurrentPlayer)))
+                Check = true;
             else
-                Checkmate = false;
+                Check = false;
 
-            Turno++;
-            ChangeCurrentPlayer();
+            if (CheckmateTest(Adversary(CurrentPlayer)))
+                Finished = true;
+            else
+            {
+                Turno++;
+                ChangeCurrentPlayer();
+            }
         }
 
         public void ValidadeOriginPosition(Position pos)
@@ -148,7 +153,7 @@ namespace Chess
             return null;
         }
 
-        public bool IsCheckmate(Color color)
+        public bool IsCheck(Color color)
         {
             Piece R = King(color);
             if (R == null)
@@ -162,6 +167,33 @@ namespace Chess
                     return true;
             }
             return false;
+        }
+
+        public bool CheckmateTest(Color color)
+        {
+            if (!IsCheck(color))
+                return false;
+            foreach (Piece x in PiecesInGame(color))
+            {
+                bool[,] mat = x.AvailableMovements();
+                for (int i = 0; i < Tab.Rows; i++)
+                {
+                    for (int j = 0; j < Tab.Columns; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Position origin = x.Position;
+                            Position destination = new Position(i, j);
+                            Piece captured = DoMovement(origin, destination);
+                            bool checktest = IsCheck(color);
+                            UndoMovement(origin, destination, captured);
+                            if (!checktest)
+                                return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         public void PutNewPiece(char column, int row, Piece piece)

@@ -13,10 +13,18 @@ namespace Chess_Console
             Console.WriteLine();
             PrintCapturedPieces(match);
             Console.WriteLine("\nTurno: " + match.Turno);
-            Console.WriteLine("Aguardando jogada: " + match.CurrentPlayer);
-            if (match.Checkmate)
+            if (!match.Finished)
             {
-                Console.WriteLine("XEQUE");
+                Console.WriteLine("Aguardando jogada: " + match.CurrentPlayer);
+                if (match.Check)
+                {
+                    Console.WriteLine("XEQUE");
+                }
+            }
+            else
+            {
+                Console.WriteLine("XEQUEMATE!!");
+                Console.WriteLine("Vencedor: " + match.CurrentPlayer);
             }
         }
 
