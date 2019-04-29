@@ -10,14 +10,21 @@ namespace Chess_Console
         {
             try
             {
-                Board tab = new Board(8, 8);
-                tab.putPiece(new Torre(Color.Black, tab), new Position(0, 0));
-                tab.putPiece(new Torre(Color.Black, tab), new Position(1, 3));
-                tab.putPiece(new Rei(Color.Black, tab), new Position(2, 4));
+                Match match = new Match();
+                while (!match.Finished)
+                {
+                    Console.Clear();
+                    Screen.printBoard(match.tab);
+                    Console.WriteLine();
+                    Console.Write("Origem: ");
+                    Position origin = Screen.readPosition().toPosition();
+                    Console.Write("Destino: ");
+                    Position destination = Screen.readPosition().toPosition();
+                    match.doMovement(origin, destination);
 
-                tab.putPiece(new Rei(Color.White, tab), new Position(3, 5));
+                }
 
-                Screen.printBoard(tab);
+                Screen.printBoard(match.tab);
             }
             catch(BoardException e)
             {

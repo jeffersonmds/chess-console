@@ -14,5 +14,10 @@
             Tab = tab;
             this.Movements = 0;
         }
+
+        public void increaseMovements()
+        {
+            Movements++;
+        }
     }
 }
