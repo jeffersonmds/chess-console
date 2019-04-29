@@ -204,19 +204,39 @@ namespace Chess
 
         private void PutAllPieces()
         {
-            PutNewPiece('c', 1, new Torre(Color.White, Tab));
-            PutNewPiece('c', 2, new Torre(Color.White, Tab));
-            PutNewPiece('d', 2, new Torre(Color.White, Tab));
-            PutNewPiece('e', 2, new Torre(Color.White, Tab));
-            PutNewPiece('e', 1, new Torre(Color.White, Tab));
-            PutNewPiece('d', 1, new Rei(Color.White, Tab));
+            PutNewPiece('a', 1, new Torre(Color.White, Tab));
+            PutNewPiece('b', 1, new Cavalo(Color.White, Tab));
+            PutNewPiece('c', 1, new Bispo(Color.White, Tab));
+            PutNewPiece('d', 1, new Dama(Color.White, Tab));
+            PutNewPiece('e', 1, new Rei(Color.White, Tab));
+            PutNewPiece('f', 1, new Bispo(Color.White, Tab));
+            PutNewPiece('g', 1, new Cavalo(Color.White, Tab));
+            PutNewPiece('h', 1, new Torre(Color.White, Tab));
+            PutNewPiece('a', 2, new Peao(Color.White, Tab));
+            PutNewPiece('b', 2, new Peao(Color.White, Tab));
+            PutNewPiece('c', 2, new Peao(Color.White, Tab));
+            PutNewPiece('d', 2, new Peao(Color.White, Tab));
+            PutNewPiece('e', 2, new Peao(Color.White, Tab));
+            PutNewPiece('f', 2, new Peao(Color.White, Tab));
+            PutNewPiece('g', 2, new Peao(Color.White, Tab));
+            PutNewPiece('h', 2, new Peao(Color.White, Tab));
 
-            PutNewPiece('c', 7, new Torre(Color.Black, Tab));
-            PutNewPiece('c', 8, new Torre(Color.Black, Tab));
-            PutNewPiece('d', 7, new Torre(Color.Black, Tab));
-            PutNewPiece('e', 7, new Torre(Color.Black, Tab));
-            PutNewPiece('e', 8, new Torre(Color.Black, Tab));
-            PutNewPiece('d', 8, new Rei(Color.Black, Tab));
+            PutNewPiece('a', 8, new Torre(Color.Black, Tab));
+            PutNewPiece('b', 8, new Cavalo(Color.Black, Tab));
+            PutNewPiece('c', 8, new Bispo(Color.Black, Tab));
+            PutNewPiece('d', 8, new Dama(Color.Black, Tab));
+            PutNewPiece('e', 8, new Rei(Color.Black, Tab));
+            PutNewPiece('f', 8, new Bispo(Color.Black, Tab));
+            PutNewPiece('g', 8, new Cavalo(Color.Black, Tab));
+            PutNewPiece('h', 8, new Torre(Color.Black, Tab));
+            PutNewPiece('a', 7, new Peao(Color.Black, Tab));
+            PutNewPiece('b', 7, new Peao(Color.Black, Tab));
+            PutNewPiece('c', 7, new Peao(Color.Black, Tab));
+            PutNewPiece('d', 7, new Peao(Color.Black, Tab));
+            PutNewPiece('e', 7, new Peao(Color.Black, Tab));
+            PutNewPiece('f', 7, new Peao(Color.Black, Tab));
+            PutNewPiece('g', 7, new Peao(Color.Black, Tab));
+            PutNewPiece('h', 7, new Peao(Color.Black, Tab));
         }
     }
 }
